@@ -27,7 +27,7 @@ class SipHashKey {
      */
     public SipHashKey(byte[] key) {
         if (key.length != 16) {
-            throw new IllegalArgumentException("Key must be exactly 16 bytes.");
+            throw new IllegalArgumentException("Key must be exactly 16 bytes!");
         }
         this.k0 = bytesToLong(key, 0);
         this.k1 = bytesToLong(key, 8);

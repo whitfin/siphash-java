@@ -8,6 +8,16 @@ package com.zackehh.siphash;
 class SipHashConstants {
 
     /**
+     * This constructor is private, nobody should be
+     * accessing it!
+     *
+     * @throws IllegalAccessException
+     */
+    private SipHashConstants() throws IllegalAccessException {
+        throw new IllegalAccessException();
+    }
+
+    /**
      * Initial magic number for v0.
      */
     static final long INITIAL_V0 = 0x736f6d6570736575L;
