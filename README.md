@@ -20,7 +20,7 @@ This library was heavily influenced by [veorq's C implementation](https://github
 
 ## Usage
 
-There are two ways of using SipHash (see below). Both return a `SipHashResult` which can be used to retrieve the result in various forms. All constructors can take arguments to specify the compression rounds. For further usage, please visit the [documentation](http://www.javadoc.io/doc/com.zackehh/siphash-java).
+There are two ways of using SipHash (see below). Both return a `SipHashResult` which can be used to retrieve the result in various forms. All constructors can take arguments to specify the compression rounds. For further usage, please visit the [documentation](http://www.javadoc.io/doc/com.zackehh/siphash).
 
 #### Full Input Hash
 
