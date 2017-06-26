@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.zackehh</groupId>
+    <groupId>io.whitfin</groupId>
     <artifactId>siphash</artifactId>
     <version>1.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -13,7 +13,7 @@
     <description>
         A SipHash implementation in Java.
     </description>
-    <url>https://github.com/zackehh/siphash-java</url>
+    <url>https://github.com/whitfin/siphash-java</url>
 
     <properties>
         <jacoco.version>0.7.5.201505241946</jacoco.version>
@@ -22,18 +22,16 @@
 
     <developers>
         <developer>
-            <id>iwhitfield</id>
+            <id>whitfin</id>
             <name>Isaac Whitfield</name>
-            <email>iw@zackehh.com</email>
-            <organization>Appcelerator, Inc.</organization>
-            <organizationUrl>http://www.appcelerator.com</organizationUrl>
+            <email>isaac@whitfin.io</email>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:zackehh/siphash-java.git</connection>
-        <developerConnection>scm:git:git@github.com:zackehh/siphash-java.git</developerConnection>
-        <url>git@github.com:zackehh/siphash-java.git</url>
+        <connection>scm:git:git@github.com:whitfin/siphash-java.git</connection>
+        <developerConnection>scm:git:git@github.com:whitfin/siphash-java.git</developerConnection>
+        <url>git@github.com:whitfin/siphash-java.git</url>
     </scm>
 
     <licenses>
