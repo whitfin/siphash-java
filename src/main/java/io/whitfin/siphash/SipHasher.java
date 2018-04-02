@@ -60,31 +60,13 @@ public final class SipHasher {
     /**
      * Creates a new container, seeded with the provided key.
      *
-     * This will used the default values for C and D rounds.
-     *
      * @param key
      *      the key bytes used to seed the container.
      * @return
      *      a {@link SipHasherContainer} instance after initialization.
      */
     public static SipHasherContainer container(byte[] key) {
-        return container(key, DEFAULT_C, DEFAULT_D);
-    }
-
-    /**
-     * Creates a new container, seeded with the provided key and rounds.
-     *
-     * @param key
-     *      the key bytes used to seed the container.
-     * @param c
-     *      the number of C rounds of compression
-     * @param d
-     *      the number of D rounds of compression.
-     * @return
-     *      a {@link SipHasherContainer} instance after initialization.
-     */
-    public static SipHasherContainer container(byte[] key, int c, int d) {
-        return new SipHasherContainer(key, c, d);
+        return new SipHasherContainer(key);
     }
 
     /**

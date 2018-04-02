@@ -1,8 +1,8 @@
 # SipHash
 
-[![Build Status](https://travis-ci.org/zackehh/siphash-java.svg?branch=master)](https://travis-ci.org/zackehh/siphash-java) [![Coverage Status](https://coveralls.io/repos/zackehh/siphash-java/badge.svg?branch=master&service=github)](https://coveralls.io/github/zackehh/siphash-java?branch=master)
+[![Build Status](https://travis-ci.org/whitfin/siphash-java.svg?branch=master)](https://travis-ci.org/whitfin/siphash-java) [![Coverage Status](https://coveralls.io/repos/whitfin/siphash-java/badge.svg?branch=master&service=github)](https://coveralls.io/github/whitfin/siphash-java?branch=master)
 
-A Java implementation of the SipHash cryptographic hash family. Supports any variation, although defaults to the widely used SipHash-2-4. Can be used with either full input, or used as a streaming digest.
+A Java implementation of the SipHash cryptographic hash family. Supports any variation, although defaults to the widely used SipHash-2-4. This library offers both a zero-allocation implementation, along with a streaming digest.
 
 This library was heavily influenced by [veorq's C implementation](https://github.com/veorq/siphash) and [Forward C&C's reference implementation](http://www.forward.com.au/pfod/SipHashJavaLibrary/) - I just decided it was time a Java implementation of SipHash made it onto Maven :).
 
@@ -12,54 +12,75 @@ This library was heavily influenced by [veorq's C implementation](https://github
 
 ```
 <dependency>
-    <groupId>com.zackehh</groupId>
+    <groupId>io.whitfin</groupId>
     <artifactId>siphash</artifactId>
-    <version>1.0.0</version>
+    <version>2.0</version>
 </dependency>
 ```
 
 ## Usage
 
-There are two ways of using SipHash (see below). Both return a `SipHashResult` which can be used to retrieve the result in various forms. All constructors can take arguments to specify the compression rounds. For further usage, please visit the [documentation](http://www.javadoc.io/doc/com.zackehh/siphash).
+There are three main ways to use this library, and the appropriate choice will depend on your use case. For further usage, please visit the [documentation](http://www.javadoc.io/doc/io.whitfin/siphash).
 
-#### Full Input Hash
+### Zero Allocation
 
-The first is to simple create a `SipHash` instance and use it to repeatedly hash using the same key.
-
-The internal state is immutable, so you can hash many inputs without having to recreate a new `SipHash` instance (unless you want a new key).
+The fastest use of this algorithm is to simply call `SipHasher.hash/2` which will call a zero-allocation implementation of the SipHash algorithm. This implementation should be used in most cases; specifically cases where you have frequently differing seed keys.
 
 ```java
-SipHash hasher = new SipHash("0123456789ABCDEF".getBytes());
+// specify the key and data pair
+String key = "0123456789ABCDEF".getBytes();
+String data = "my-input".getBytes();
 
-SipHashResult result = hasher.hash("my-input".getBytes());
+// hash using default compression (2-4)
+long hash1 = SipHasher.hash(key, data);
 
-System.out.println(result.get());                             // 182795880124085484 <-- this can overflow
-System.out.println(result.getHex());                          //  "2896be26d3374ec"
-System.out.println(result.getHex(true));                      // "02896be26d3374ec"
-System.out.println(result.getHex(SipHashCase.UPPER));         //  "2896BE26D3374EC"
-System.out.println(result.getHex(true, SipHashCase.UPPER));   // "02896BE26D3374EC"
+// you can also specify compression rounds
+long hash2 = SipHasher.hash(key, data, 2, 4);
 ```
 
-#### Streaming Hash
+### Contained Hashing
 
-The second is to use the library as a streaming hash, meaning you can apply chunks of bytes to the hash as they become available.
+This is an optimized implementation for cases where you have a single key (such as a hash table). In these cases, the seed values can be precomputed and re-used, rather than calculating them repeatedly on each call to hash. Although the initial call to create a container uses an allocation, there are no other allocations inside the container.
 
-Using this method you must create a new digest every time you want to hash a different input as the internal state is mutable.
 
 ```java
-SipHashDigest digest = new SipHashDigest("0123456789ABCDEF".getBytes());
+// create a container from our key
+String key = "0123456789ABCDEF".getBytes();
+SipHasherContainer container = SipHasher.container(key);
 
-digest.update("chu".getBytes());
-digest.update("nked".getBytes());
-digest.update(" string".getBytes());
+// hash using default compression (2-4)
+long hash1 = container.hash(data);
 
-SipHashResult result = digest.finish();
+// you can also specify compression rounds
+long hash2 = container.hash(data, 2, 4);
+```
 
-System.out.println(result.get());                             // 3502906798476177428 <-- this can overflow
-System.out.println(result.getHex());                          //  "309cd32c8c793014"
-System.out.println(result.getHex(true));                      //  "309cd32c8c793014"
-System.out.println(result.getHex(SipHashCase.UPPER));         //  "309CD32C8C793014"
-System.out.println(result.getHex(true, SipHashCase.UPPER));   //  "309CD32C8C793014"
+### Streaming Digest
+
+The final way to use the library is as a streaming digest; meaning that you can apply chunks of input as they become available. The advantage here is that you can hash input of unknown length. Naturally, this is slower than the alternatives and should only be used when necessary. A digest cannot be re-used; one must be created on a per-hash basis.
+
+```java
+// create a container from our key
+String key = "0123456789ABCDEF".getBytes();
+SipHasherStream hash = SipHasher.init(key);
+
+// update several times
+hash.update("chu".getBytes());
+hash.update("nked".getBytes());
+hash.update(" string".getBytes());
+
+// retrieve the final result
+long result = hash.digest();
+```
+
+## Formatting
+
+By default, as of v2.0.0, all hashes are returned as a `long`. However, you can use `SipHasher.toHexString/1` to convert a hash to a hexidecimal String value.
+
+```java
+// output will be padded (if necessary) to 16 bytes
+SipHasher.toHexString(-3891084581787974112L); // ca0017304f874620
+SipHasher.toHexString(   77813817455948350L); // 011473413414323e
 ```
 
 ## Contributing

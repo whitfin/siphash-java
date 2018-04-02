@@ -111,7 +111,7 @@ public final class SipHasherStream {
         }
         this.v3 ^= this.m;
         for (int i = 0; i < this.c; i++) {
-            sipround();
+            round();
         }
         this.v0 ^= this.m;
         this.m_idx = 0;
@@ -154,7 +154,7 @@ public final class SipHasherStream {
 
         this.v2 ^= 0xff;
         for (int i = 0; i < this.d; i++) {
-            sipround();
+            round();
         }
 
         return this.v0 ^ this.v1 ^ this.v2 ^ this.v3;
@@ -163,7 +163,7 @@ public final class SipHasherStream {
     /**
      * SipRound implementation for internal use.
      */
-    private void sipround() {
+    private void round() {
         this.v0 += this.v1;
         this.v2 += this.v3;
         this.v1 = rotateLeft(this.v1, 13);

@@ -12,16 +12,6 @@ import static io.whitfin.siphash.SipHasher.*;
 public final class SipHasherContainer {
 
     /**
-     * The specified rounds of C compression.
-     */
-    private final int c;
-
-    /**
-     * The specified rounds of D compression.
-     */
-    private final int d;
-
-    /**
      * The seeded value for the magic v0 number.
      */
     private final long v0;
@@ -42,16 +32,12 @@ public final class SipHasherContainer {
     private final long v3;
 
     /**
-     * Initializes a container from a key and rounds.
+     * Initializes a container from a key seed.
      *
      * @param key
      *      the key to use to seed this hash container.
-     * @param c
-     *      the desired rounds of C compression.
-     * @param d
-     *      the desired rounds of D compression.
      */
-    SipHasherContainer(byte[] key, int c, int d) {
+    SipHasherContainer(byte[] key) {
         if (key.length != 16) {
             throw new IllegalArgumentException("Key must be exactly 16 bytes!");
         }
@@ -63,9 +49,6 @@ public final class SipHasherContainer {
         this.v1 = INITIAL_V1 ^ k1;
         this.v2 = INITIAL_V2 ^ k0;
         this.v3 = INITIAL_V3 ^ k1;
-
-        this.c = c;
-        this.d = d;
     }
 
     /**
@@ -78,8 +61,31 @@ public final class SipHasherContainer {
      */
     public final long hash(byte[] data) {
         return SipHasher.hash(
-            this.c,
-            this.d,
+            DEFAULT_C,
+            DEFAULT_D,
+            this.v0,
+            this.v1,
+            this.v2,
+            this.v3,
+            data
+        );
+    }
+
+    /**
+     * Hashes input data using the preconfigured state.
+     *
+     * @param data
+     *      the data to hash and digest.
+     * @param c
+     *      the desired rounds of C compression.
+     * @param d
+     *      the desired rounds of D compression.
+     * @return
+     *      a long value as the output of the hash.
+     */
+    public final long hash(byte[] data, int c, int d) {
+        return SipHasher.hash(
+            c, d,
             this.v0,
             this.v1,
             this.v2,
