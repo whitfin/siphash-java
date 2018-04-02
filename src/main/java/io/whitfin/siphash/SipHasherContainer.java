@@ -60,15 +60,7 @@ public final class SipHasherContainer {
      *      a long value as the output of the hash.
      */
     public final long hash(byte[] data) {
-        return SipHasher.hash(
-            DEFAULT_C,
-            DEFAULT_D,
-            this.v0,
-            this.v1,
-            this.v2,
-            this.v3,
-            data
-        );
+        return hash(data, DEFAULT_C, DEFAULT_D);
     }
 
     /**
