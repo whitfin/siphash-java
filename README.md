@@ -14,7 +14,7 @@ This library was heavily influenced by [veorq's C implementation](https://github
 <dependency>
     <groupId>io.whitfin</groupId>
     <artifactId>siphash</artifactId>
-    <version>2.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
