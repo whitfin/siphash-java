@@ -165,9 +165,9 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.github.hazendaz.maven</groupId>
+                <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
-                <version>4.5.0</version>
+                <version>4.3.0</version>
             </plugin>
         </plugins>
     </build>
