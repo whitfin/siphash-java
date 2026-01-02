@@ -4,12 +4,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * Test cases for the {@link SipHasher} class.
+ * Test cases for the {@link SipHash} class.
  *
  * This also contains reference methods which can be used by other
  * implementations in order to make sure of the same vector bootstrap.
  */
-public class SipHasherTest {
+public class SipHashTest {
 
     // test vectors via https://www.131002.net/siphash/siphash24.c
     private static final long[] EXPECTED = new long[] {
@@ -36,7 +36,7 @@ public class SipHasherTest {
      */
     @Test
     public void testConstructorUsage() {
-        new SipHasher();
+        new SipHash();
     }
 
     /**
@@ -47,7 +47,7 @@ public class SipHasherTest {
         testVectors(new Hasher() {
             @Override
             public long hash(byte[] key, byte[] data) {
-                return SipHasher.hash(key, data);
+                return SipHash.hash(key, data);
             }
         });
     }
@@ -63,8 +63,8 @@ public class SipHasherTest {
         long hash1 = -3891084581787974112L;
         long hash2 =    77813817455948350L;
 
-        String hex1 = SipHasher.toHexString(hash1);
-        String hex2 = SipHasher.toHexString(hash2);
+        String hex1 = SipHash.toHexString(hash1);
+        String hex2 = SipHash.toHexString(hash2);
 
         Assert.assertEquals(hex1, "ca0017304f874620");
         Assert.assertEquals(hex2, "011473413414323e");
@@ -75,7 +75,7 @@ public class SipHasherTest {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testExceptionOnInvalidKey() {
-        SipHasher.hash(new byte[0], new byte[0]);
+        SipHash.hash(new byte[0], new byte[0]);
     }
 
     /**

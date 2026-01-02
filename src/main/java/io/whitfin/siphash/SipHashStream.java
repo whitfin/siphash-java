@@ -1,6 +1,6 @@
 package io.whitfin.siphash;
 
-import static io.whitfin.siphash.SipHasher.*;
+import static io.whitfin.siphash.SipHash.*;
 
 /**
  * Streaming implementation of the SipHash algorithm.
@@ -14,7 +14,7 @@ import static io.whitfin.siphash.SipHasher.*;
  * no further allocations - so memory should prove similar to the non-streaming
  * implementation.
  */
-public final class SipHasherStream {
+public final class SipHashStream {
 
     /**
      * The specified rounds of C compression.
@@ -71,7 +71,7 @@ public final class SipHasherStream {
      * @param d
      *      the desired rounds of D compression.
      */
-    SipHasherStream(byte[] key, int c, int d) {
+    SipHashStream(byte[] key, int c, int d) {
         if (key.length != 16) {
             throw new IllegalArgumentException("Key must be exactly 16 bytes!");
         }
@@ -101,9 +101,9 @@ public final class SipHasherStream {
      * @param b
      *      the byte being added to the digest.
      * @return
-     *      the same {@link SipHasherStream} for chaining.
+     *      the same {@link SipHashStream} for chaining.
      */
-    public SipHasherStream update(byte b) {
+    public SipHashStream update(byte b) {
         this.len++;
         this.m |= (((long) b & 0xff) << (this.m_idx++ * 8));
         if (this.m_idx < 8) {
@@ -125,9 +125,9 @@ public final class SipHasherStream {
      * @param bytes
      *      the bytes being added to the digest.
      * @return
-     *      the same {@link SipHasherStream} for chaining.
+     *      the same {@link SipHashStream} for chaining.
      */
-    public SipHasherStream update(byte[] bytes) {
+    public SipHashStream update(byte[] bytes) {
         for (byte b : bytes) {
             update(b);
         }

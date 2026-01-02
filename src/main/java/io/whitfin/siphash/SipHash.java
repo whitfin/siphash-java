@@ -6,26 +6,26 @@ package io.whitfin.siphash;
  * This class offers three main utilities;
  *
  * - A zero-allocation SipHash algorithm.
- * - A container implementation for single-key environments.
+ * - A context implementation for single-key environments.
  * - A streaming SipHash algorithm for unknown input length.
  *
  * In most cases, the zero-allocation (0A) implementation will be desired. This
  * can be called via {@link #hash(byte[], byte[])} on the most basic level.
  *
  * In the case you're using a single key (such as one seeded at application
- * startup), you can make good use of a container which will simply avoid the
+ * startup), you can make good use of a context which will simply avoid the
  * need to recalculate the initial states on each hash call. This is an extremely
  * small optimization, but avoids all possible overhead for the best throughput.
- * Containers can be created via the {@link #container(byte[])} method, and can
- * hash input via {@link SipHasherContainer#hash(byte[])}.
+ * Contexts can be created via the {@link #context(byte[])} method, and can
+ * hash input via {@link SipHashContext#hash(byte[])}.
  *
  * For the case where the input length is unknown, a streaming implementation is
- * available via {@link SipHasherStream}. This can be initialized on a per-hash
+ * available via {@link SipHashStream}. This can be initialized on a per-hash
  * basis via {@link #init(byte[])} and can be updated with bytes multiple times
- * via {@link SipHasherStream#update(byte[])}. Once all input has been updated,
- * a final call to {@link SipHasherStream#digest()} will return the digested data.
+ * via {@link SipHashStream#update(byte[])}. Once all input has been updated,
+ * a final call to {@link SipHashStream#digest()} will return the digested data.
  */
-public final class SipHasher {
+public final class SipHash {
 
     /**
      * Default value for the C rounds of compression.
@@ -58,15 +58,15 @@ public final class SipHasher {
     static final long INITIAL_V3 = 0x7465646279746573L;
 
     /**
-     * Creates a new container, seeded with the provided key.
+     * Creates a new context, seeded with the provided key.
      *
      * @param key
-     *      the key bytes used to seed the container.
+     *      the key bytes used to seed the context.
      * @return
-     *      a {@link SipHasherContainer} instance after initialization.
+     *      a {@link SipHashContext} instance after initialization.
      */
-    public static SipHasherContainer container(byte[] key) {
-        return new SipHasherContainer(key);
+    public static SipHashContext context(byte[] key) {
+        return new SipHashContext(key);
     }
 
     /**
@@ -126,9 +126,9 @@ public final class SipHasher {
      * @param key
      *      the key to seed the hash with.
      * @return
-     *      a {@link SipHasherStream} instance to update and digest.
+     *      a {@link SipHashStream} instance to update and digest.
      */
-    public static SipHasherStream init(byte[] key) {
+    public static SipHashStream init(byte[] key) {
         return init(key, DEFAULT_C, DEFAULT_D);
     }
 
@@ -145,10 +145,10 @@ public final class SipHasher {
      * @param d
      *      the number of D rounds of compression.
      * @return
-     *      a {@link SipHasherStream} instance to update and digest.
+     *      a {@link SipHashStream} instance to update and digest.
      */
-    public static SipHasherStream init(byte[] key, int c, int d) {
-        return new SipHasherStream(key, c, d);
+    public static SipHashStream init(byte[] key, int c, int d) {
+        return new SipHashStream(key, c, d);
     }
 
     /**

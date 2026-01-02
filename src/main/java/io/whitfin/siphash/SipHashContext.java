@@ -1,6 +1,6 @@
 package io.whitfin.siphash;
 
-import static io.whitfin.siphash.SipHasher.*;
+import static io.whitfin.siphash.SipHash.*;
 
 /**
  * Small container of state to aid SipHash throughput.
@@ -9,7 +9,7 @@ import static io.whitfin.siphash.SipHasher.*;
  * hashes. As such, this avoids a small amount of overhead on each hash which
  * might prove useful in the case you have constant keys (hash tables, etc).
  */
-public final class SipHasherContainer {
+public final class SipHashContext {
 
     /**
      * The seeded value for the magic v0 number.
@@ -32,12 +32,12 @@ public final class SipHasherContainer {
     private final long v3;
 
     /**
-     * Initializes a container from a key seed.
+     * Initializes a context from a key seed.
      *
      * @param key
-     *      the key to use to seed this hash container.
+     *      the key to use to seed this hash context.
      */
-    SipHasherContainer(byte[] key) {
+    SipHashContext(byte[] key) {
         if (key.length != 16) {
             throw new IllegalArgumentException("Key must be exactly 16 bytes!");
         }
@@ -76,7 +76,7 @@ public final class SipHasherContainer {
      *      a long value as the output of the hash.
      */
     public long hash(byte[] data, int c, int d) {
-        return SipHasher.hash(
+        return SipHash.hash(
             c, d,
             this.v0,
             this.v1,

@@ -3,16 +3,16 @@ package io.whitfin.siphash;
 import org.testng.annotations.Test;
 
 /**
- * Test cases for the {@link SipHasherStream} class.
+ * Test cases for the {@link SipHashStream} class.
  */
-public class SipHasherStreamTest extends SipHasherTest {
+public class SipHashStreamTest extends SipHashTest {
 
     /**
      * Tests invalid key exceptions are thrown.
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testExceptionOnInvalidKey() {
-        SipHasher.init(new byte[0]);
+        SipHash.init(new byte[0]);
     }
 
     /**
@@ -23,7 +23,7 @@ public class SipHasherStreamTest extends SipHasherTest {
         testVectors(new Hasher() {
             @Override
             public long hash(byte[] key, byte[] data) {
-                return SipHasher.init(key).update(data).digest();
+                return SipHash.init(key).update(data).digest();
             }
         });
     }
