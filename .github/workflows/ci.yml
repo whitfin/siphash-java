@@ -13,6 +13,7 @@ jobs:
     container:
       image: maven:3-eclipse-temurin-${{ matrix.java }}
     strategy:
+      fail-fast: false
       matrix:
         java:
           - 25
