@@ -103,7 +103,7 @@ public final class SipHasherStream {
      * @return
      *      the same {@link SipHasherStream} for chaining.
      */
-    public final SipHasherStream update(byte b) {
+    public SipHasherStream update(byte b) {
         this.len++;
         this.m |= (((long) b & 0xff) << (this.m_idx++ * 8));
         if (this.m_idx < 8) {
@@ -127,7 +127,7 @@ public final class SipHasherStream {
      * @return
      *      the same {@link SipHasherStream} for chaining.
      */
-    public final SipHasherStream update(byte[] bytes) {
+    public SipHasherStream update(byte[] bytes) {
         for (byte b : bytes) {
             update(b);
         }
@@ -144,7 +144,7 @@ public final class SipHasherStream {
      * @return
      *      the final result of the hash as a long.
      */
-    public final long digest() {
+    public long digest() {
         byte msgLenMod256 = this.len;
 
         while (this.m_idx < 7) {

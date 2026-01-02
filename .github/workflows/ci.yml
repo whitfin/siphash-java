@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Java ${{ matrix.java }}
+    runs-on: ubuntu-latest
+    container:
+      image: maven:3-eclipse-temurin-${{ matrix.java }}
+    strategy:
+      matrix:
+        java:
+          - 25
+          - 21
+          - 17
+          - 11
+          - 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with Maven
+        run: mvn clean test jacoco:report coveralls:report
