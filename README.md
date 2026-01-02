@@ -1,6 +1,5 @@
 # SipHash
-
-[![Build Status](https://travis-ci.org/whitfin/siphash-java.svg?branch=master)](https://travis-ci.org/whitfin/siphash-java) [![Coverage Status](https://coveralls.io/repos/whitfin/siphash-java/badge.svg?branch=master&service=github)](https://coveralls.io/github/whitfin/siphash-java?branch=master)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/whitfin/siphash-java/ci.yml?branch=main)](https://github.com/whitfin/siphash-java/actions) [![Coverage Status](https://img.shields.io/coveralls/whitfin/siphash-java.svg)](https://coveralls.io/github/whitfin/siphash-java) [![Maven Version](https://img.shields.io//maven-central/v/io.whitfin/siphash-java.svg)](https://central.sonatype.com/artifact/io.whitfin/siphash) 
 
 A Java implementation of the SipHash cryptographic hash family. Supports any variation, although defaults to the widely used SipHash-2-4. This library offers both a zero-allocation implementation, along with a streaming digest.
 
@@ -14,7 +13,7 @@ This library was heavily influenced by [veorq's C implementation](https://github
 <dependency>
     <groupId>io.whitfin</groupId>
     <artifactId>siphash</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 
