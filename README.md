@@ -23,7 +23,7 @@ There are three main ways to use this library, and the appropriate choice will d
 
 ### Zero Allocation
 
-The fastest use of this algorithm is to simply call `SipHasher.hash/2` which will call a zero-allocation implementation of the SipHash algorithm. This implementation should be used in most cases; specifically cases where you have frequently differing seed keys.
+The fastest use of this algorithm is to simply call `SipHash.hash/2` which will call a zero-allocation implementation of the SipHash algorithm. This implementation should be used in most cases; specifically cases where you have frequently differing seed keys.
 
 ```java
 import io.whitfin.siphash.SipHash;
@@ -49,7 +49,7 @@ import io.whitfin.siphash.SipHashContext;
 
 // create a container from our key
 String key = "0123456789ABCDEF".getBytes();
-SipHashContext ctx = SipHasher.context(key);
+SipHashContext ctx = SipHash.context(key);
 
 // hash using default compression (2-4)
 long hash1 = ctx.hash(data);
@@ -65,7 +65,7 @@ The final way to use the library is as a streaming digest; meaning that you can 
 ```java
 // create a container from our key
 String key = "0123456789ABCDEF".getBytes();
-SipHashStream hash = SipHasher.init(key);
+SipHashStream hash = SipHash.init(key);
 
 // update several times
 hash.update("chu".getBytes());
@@ -78,7 +78,7 @@ long result = hash.digest();
 
 ## Formatting
 
-By default, as of v2.0.0, all hashes are returned as a `long`. However, you can use `SipHasher.toHexString/1` to convert a hash to a hexidecimal String value.
+By default, as of v2.0.0, all hashes are returned as a `long`. However, you can use `SipHash.toHexString/1` to convert a hash to a hexidecimal String value.
 
 ```java
 // output will be padded (if necessary) to 16 bytes
